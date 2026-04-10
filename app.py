@@ -8,13 +8,13 @@ app = Flask(__name__)
 def hello():
     return "heelo tout le monde"
 
-#injection SQL détectée par CodeQL
+#injection SQL
 @app.route('/user')
 def get_user():
     username = request.args.get('username', '')
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    #concaténation directe au lieu d'utiliser des paramètres
+    #concat directe
     query = f"SELECT * FROM users WHERE username = '{username}'"
     try:
         cursor.execute(query)
@@ -26,7 +26,6 @@ def get_user():
 @app.route('/ping')
 def ping():
     ip = request.args.get('ip', '127.0.0.1')
-    # Mauvaise pratique : passage direct d'une entrée utilisateur au système
     os.system(f"ping -c 1 {ip}")
     return f"Commande de ping lancée vers {ip}"
 
